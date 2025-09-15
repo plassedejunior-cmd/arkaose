@@ -1,0 +1,167 @@
+:root{
+  --bg:#0b0f15; --ink:#cfe6ff; --panel:#0f1726;
+  --accent:#6bdcff; --muted:#24344e; --purple:#a56bff;
+}
+
+/* Reset mínimo + tipografia */
+*{ box-sizing:border-box; }
+html, body, #root{ height:100%; }
+html, body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  /* evita scroll lateral acidental em mobile */
+  overflow-x:hidden;
+}
+canvas{ display:block; }
+
+/* Utilidades responsivas */
+.container{
+  width:min(920px, 100%);
+  margin-inline:auto;
+  padding-inline:clamp(1rem, 2vw, 2rem);
+}
+
+.section{
+  border:1px solid var(--muted);
+  border-radius:12px;
+  background:linear-gradient(180deg, rgba(19,30,54,.65), rgba(13,20,33,.6));
+  padding:clamp(1rem, 2vw, 1.3rem);
+}
+
+/* Botão primário */
+.btn{
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),#8be1ff);
+  color:#05222c;
+  border:0;
+  border-radius:.6rem;
+  padding:.75rem 1rem;
+  font-weight:800;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+.btn[disabled]{ opacity:.55; cursor:not-allowed; filter:grayscale(.35); }
+
+/* “Badge”/chip de status */
+.chip{
+  display:inline-flex; align-items:center; font-weight:800;
+  border-radius:999px; padding:.3rem .7rem; border:1px solid; height:2.2rem;
+}
+
+/* Faixas (cores do resultado) */
+.r1{color:#b7ffd6;border-color:#b7ffd622;background:#b7ffd614}
+.r2{color:#bfe7ff;border-color:#bfe7ff22;background:#bfe7ff14}
+.r3{color:#e7d1ff;border-color:#e7d1ff22;background:#e7d1ff14}
+.r4{color:#ffd7b3;border-color:#ffd7b322;background:#ffd7b314}
+.r5{color:#ffe7a6;border-color:#ffe7a622;background:#ffe7a614}
+.r6{color:#ffc1c1;border-color:#ffc1c122;background:#ffc1c114}
+
+/* Tipos */
+.h1{ font-size:clamp(1.1rem, 1rem + 1vw, 1.6rem); font-weight:900; margin:0; }
+.h2{ font-size:clamp(1rem, .95rem + .6vw, 1.3rem); font-weight:800; margin:0; }
+.p { font-size:clamp(.9rem, .85rem + .2vw, 1rem); }
+
+/* Grade adaptativa */
+.grid{
+  display:grid;
+  gap:clamp(.6rem, 1.2vw, 1rem);
+}
+.grid-cols-1{ grid-template-columns:1fr; }
+
+/* Status bar fixa (rodapé) */
+.status{
+  position:fixed; left:0; right:0;
+  bottom:calc(.75rem + env(safe-area-inset-bottom));
+  display:flex; justify-content:center; pointer-events:none;
+  padding:0 .75rem;
+}
+.status-inner{
+  pointer-events:auto;
+  display:flex; align-items:center; gap:.65rem;
+  background:color-mix(in oklab, #0f1726 85%, transparent);
+  border:1px solid var(--muted);
+  border-radius:999px; padding:.55rem .95rem; font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  max-width:min(92vw,900px)
+}
+.timer{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:2.2rem; height:2.2rem; border-radius:999px;
+  background:#13203a; border:1px solid #233656; font-variant-numeric:tabular-nums;
+}
+
+/* Modal básico */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.55);
+  display:flex; align-items:center; justify-content:center; padding:1rem;
+}
+.modal{
+  width:min(820px,100%); max-height:calc(100dvh - 2rem); overflow:auto;
+  background:linear-gradient(180deg,#0f1726 0%, #0d1421 100%);
+  border:1px solid var(--muted); border-radius:16px; box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+.modal-head{
+  padding:1.1rem 1.2rem;
+  background:linear-gradient(135deg, rgba(107,220,255,.18), rgba(176,132,255,.15));
+  border-bottom:1px solid #1e2b46;
+}
+.modal-body{ padding:1rem 1.2rem 1.2rem 1.2rem; }
+.closebar{ display:flex; justify-content:flex-end; padding:1rem 1.2rem 1.2rem; border-top:1px solid #1e2b46; }
+.closebtn{
+  background:#152238; border:1px solid #2a3c5a; color:#cfe6ff;
+  border-radius:.6rem; padding:.55rem .9rem; font-weight:700; cursor:pointer;
+}
+
+/* “Big counter” responsivo com gradiente */
+
+/* Grids do formulário (HUD) — mobile-first */
+.hud{
+  position:fixed; right:1rem; top:1rem; display:grid; gap:.6rem;
+  background:color-mix(in oklab, #0c1320 80%, transparent);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  padding:.8rem .9rem; border:1px solid var(--muted); border-radius:.75rem;
+  font-size:clamp(.9rem,.85rem + .2vw,1rem);
+  box-shadow:0 12px 28px rgba(0,0,0,.35)
+}
+.row{ display:grid; grid-template-columns:1fr; gap:.6rem; align-items:center; }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+.grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:.5rem; }
+
+.hud input,.hud select{
+  background:#0e1522; border:1px solid #1e2b46; color:var(--ink);
+  border-radius:.5rem; padding:.5rem .65rem; width:100%;
+}
+
+/* Em telas maiores, libera duas colunas no .row */
+@media (min-width: 721px){
+  .row{ grid-template-columns:auto 1fr; }
+}
+.actions{
+  display:flex; justify-content:flex-end; gap:.5rem;
+  padding:1rem 1.2rem 1.2rem; border-top:1px solid var(--muted);
+}
+.btn-secondary{
+  cursor:pointer; background:#152238; color:#cfe6ff;
+  border:1px solid #2a3c5a; border-radius:.6rem;
+  padding:.55rem .9rem; font-weight:700;
+}
+.btn-secondary:disabled{ opacity:.6; cursor:not-allowed; }
+
+/* Número grande + chip lado a lado */
+.result-head {
+  display: flex;
+  align-items: center;
+  gap: .8rem;        /* espaço entre número e chip */
+  flex-wrap: wrap;   /* em telas pequenas, permite quebrar */
+}
+
+.bigCounter {
+  font-size: clamp(2.2rem, 1.6rem + 3.5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: .5px;
+  background: linear-gradient(90deg, #cfe6ff, #9ad3ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
