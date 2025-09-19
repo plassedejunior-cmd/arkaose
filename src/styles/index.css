@@ -1,6 +1,8 @@
 :root{
   --bg:#0b0f15; --ink:#cfe6ff; --panel:#0f1726;
   --accent:#6bdcff; --muted:#24344e; --purple:#a56bff;
+    --header-h: 72px;       /* ajuste se seu header for maior/menor */
+  --grid-top-gap: 24px;   /* respiro igual para as duas colunas */
 }
 
 /* Reset mínimo + tipografia */
@@ -28,6 +30,7 @@ canvas{ display:block; }
   border-radius:12px;
   background:linear-gradient(180deg, rgba(19,30,54,.65), rgba(13,20,33,.6));
   padding:clamp(1rem, 2vw, 1.3rem);
+  margin-top: 1rem;
 }
 
 /* Botão primário */
@@ -117,10 +120,16 @@ canvas{ display:block; }
 
 /* Grids do formulário (HUD) — mobile-first */
 .hud{
-  position:fixed; right:1rem; top:1rem; display:grid; gap:.6rem;
+  position:fixed; 
+  right:1rem; 
+  top:1rem; 
+  display:grid; 
+  gap:.6rem;
   background:color-mix(in oklab, #0c1320 80%, transparent);
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  padding:.8rem .9rem; border:1px solid var(--muted); border-radius:.75rem;
+  backdrop-filter:blur(8px); 
+  -webkit-backdrop-filter:blur(8px);
+  padding:.8rem .9rem; border:1px solid var(--muted); 
+  border-radius:.75rem;
   font-size:clamp(.9rem,.85rem + .2vw,1rem);
   box-shadow:0 12px 28px rgba(0,0,0,.35)
 }
@@ -150,10 +159,11 @@ canvas{ display:block; }
 
 /* Número grande + chip lado a lado */
 .result-head {
-  display: flex;
+  
   align-items: center;
   gap: .8rem;        /* espaço entre número e chip */
-  flex-wrap: wrap;   /* em telas pequenas, permite quebrar */
+ height: fit-content;
+
 }
 
 .bigCounter {
@@ -164,4 +174,521 @@ canvas{ display:block; }
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+:root{
+  --header-h: 56px;
+}
+@media (min-width: 720px){
+  :root{ --header-h: 64px; }
+}
+
+/* Topbar */
+.topbar{
+  position: sticky; top: 0; z-index: 10;
+  height: var(--header-h);
+  display: grid; align-items: center;
+  border-bottom: 1px solid var(--muted);
+  background: linear-gradient(135deg, rgba(107,220,255,.08), rgba(176,132,255,.06));
+  backdrop-filter: blur(6px);
+}
+.topbar-inner{
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .75rem;
+  padding: 0 clamp(1rem, 2vw, 2rem);
+}
+.brand{
+  font-weight: 900; font-size: clamp(1rem, .9rem + 1vw, 1.4rem); margin: 0;
+}
+.menu-btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: .6rem;
+  border: 1px solid #2a3c5a; background:#152238; color:#cfe6ff; cursor:pointer;
+}
+.nav{
+  justify-self: end;
+}
+.nav-list{
+  display: none; gap: .8rem; align-items: center; list-style: none; margin: 0; padding: 0;
+}
+.nav-list a{
+  color: var(--ink); text-decoration: none; font-weight: 700;
+  padding: .35rem .6rem; border-radius: .5rem; border:1px solid transparent;
+}
+.nav-list a:hover{ border-color: #2a3c5a; background:#111a28; }
+@media (min-width: 720px){
+  .menu-btn{ display:none; }
+  .nav-list{ display: inline-flex; }
+}
+.nav-open .nav-list{ display: inline-flex; }
+
+/* Mobile lateral menu */
+.menu-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(4,8,16,.6);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:120;
+}
+.menu-backdrop.open{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.menu-drawer{
+  position:fixed;
+  inset:0 0 0 auto;
+  width:min(320px, 82vw);
+  background:linear-gradient(180deg,#0f1726,#0d1421);
+  border-left:1px solid #1e2b46;
+  transform:translateX(100%);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  box-shadow:-24px 0 60px rgba(0,0,0,.35);
+  z-index:130;
+  display:flex;
+  flex-direction:column;
+}
+.menu-drawer.open{ transform:translateX(0); }
+.menu-drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:1rem 1.2rem;
+  border-bottom:1px solid #1e2b46;
+}
+.menu-drawer-title{
+  font-weight:800;
+  font-size:clamp(1rem,.95rem + .6vw,1.2rem);
+}
+.menu-drawer-close{
+  background:#152238;
+  color:var(--ink);
+  border:1px solid #2a3c5a;
+  border-radius:.5rem;
+  padding:.45rem .8rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.menu-drawer-close:focus-visible{
+  outline:2px solid #6bdcff;
+  outline-offset:2px;
+}
+.menu-drawer-nav{
+  padding:1.2rem;
+  overflow-y:auto;
+  flex:1;
+}
+.menu-drawer-nav ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:.5rem;
+}
+.menu-link{
+  display:block;
+  background:#111a28;
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:700;
+  padding:.8rem 1rem;
+  border-radius:.65rem;
+  border:1px solid transparent;
+  transition:background .2s ease, border-color .2s ease;
+}
+.menu-link:hover,
+.menu-link:focus-visible{
+  background:#152238;
+  border-color:#2a3c5a;
+}
+.menu-link.active{
+  background:#1b2942;
+  border-color:#6bdcff55;
+}
+@media (min-width:720px){
+  .menu-backdrop,
+  .menu-drawer{ display:none; }
+}
+
+/* Rodapé */
+.site-footer{
+  border-top: 1px solid var(--muted);
+  padding: 1rem clamp(1rem, 2vw, 2rem);
+  opacity: .85; font-size: clamp(.85rem, .8rem + .2vw, .95rem);
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+}
+
+/* HUD desce um pouco para não colar na topbar */
+.hud{ top: calc(1rem + var(--header-h)); }
+/* ===== Mobile drawer ===== */
+.drawer-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+  z-index: 50;
+}
+.drawer-backdrop.open{ opacity: 1; pointer-events: auto; max-height: 85vh;}
+
+
+.drawer {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, #0f1726, #0d1421);
+  border-top-left-radius: 16px; border-top-right-radius: 16px;
+  box-shadow: 0 -20px 60px rgba(0,0,0,.35);
+  transform: translateY(100%);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+  z-index: 51;
+  max-height: 85dvh; overflow: auto;
+  border-top: 1px solid var(--muted);
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;  
+}
+  
+
+ 
+.drawer.open{ transform: translateY(0); }
+
+.drawer-head{
+ position: sticky;
+  top: 0;
+  z-index: 2;                  /* acima do conteúdo */
+  background: #0f1726;         /* fundo sólido para não “sumir” ao rolar */
+  border-bottom: 1px solid #233656;
+}
+.drawer-grip{
+   width: 80px; height: 10px;
+  border-radius: 999px;
+  background: #2a3c5a;
+  margin: .5rem auto;
+  width: 42px; height: 5px; border-radius: 99px;
+  background: #2a3c5a; opacity: .7;
+}
+.drawer-body{ 
+   overflow-y: auto;            /* o scroll acontece aqui */
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;  
+  padding: .75rem 1rem 1rem; 
+}
+
+.drawer-list{ list-style:none; padding:0; margin:0; display:grid; gap:.25rem; }
+.drawer-item a{
+  display:block; padding:.8rem 0; font-weight:800; text-decoration:none; color:var(--ink);
+  border-bottom: 1px solid #1e2b46;
+}
+.drawer-footer{
+  padding: 1rem; opacity:.8; font-size:.9rem; border-top:1px solid #1e2b46;
+}
+
+/* só mostra no mobile; desktop usa nav normal */
+@media (min-width: 720px){
+  .drawer-backdrop, .drawer{ display:none; }
+}
+/* Limite visual de "tela de celular" para o canvas */
+.canvas-shell{
+  position: relative;
+  width: 100%;
+  max-width: 430px;             /* largura típica de mobile grande */
+  height: calc(100dvh - var(--header-h) - 2rem); /* ocupa altura útil no mobile */
+  max-height: 820px;            /* limite no desktop */
+  margin: 0 auto;               /* centraliza */
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--muted);
+  background: var(--bg);
+}
+
+/* no desktop, mantém “tela” de celular centralizada */
+@media (min-width: 720px){
+  .canvas-shell{ height: 760px; }
+}
+.page{
+  position: relative;
+  z-index: 1;             /* fica acima do canvas */
+  padding: clamp(1rem, 2vw, 2rem);
+  max-width: 920px;
+  margin: 0 auto;
+}
+.prose{
+  line-height: 1.6;
+  font-size: clamp(.95rem, .9rem + .2vw, 1rem);
+}
+.prose h1{ font-size: clamp(1.6rem, 1.2rem + 2vw, 2.2rem);  }
+.prose h2{ font-size: clamp(1.2rem, 1rem + 1vw, 1.5rem);  }
+.prose ol, .prose ul{ padding-left: 1.2rem; }
+.img-placeholder{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px dashed #2a3c5a;
+  border-radius: 12px;
+  background: #0e1522;
+  margin: 1rem 0;
+}
+.brand a, .brand-link{
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-block;
+}
+.brand-link:hover{ opacity: .9; }
+.brand-link:focus-visible{
+  outline: 2px solid #2a3c5a;
+  outline-offset: 2px;
+  border-radius: .4rem;
+}
+/* MOBILE: esconde HUD antigo; usamos o drawer */
+@media (max-width: 719px){
+  .hud{ display: none !important; }
+}
+
+/* Inputs genéricos do drawer (mobile) */
+.input{
+  background:#0e1522; border:1px solid #1e2b46; color:var(--ink);
+  border-radius:.5rem; padding:.6rem .7rem; width:100%;
+}
+/* ===== Drawer: não fecha; alterna entre expandido e "peek" (colapsado) ===== */
+.drawer.peek{
+  /* mostra só ~140px acima do rodapé; ajuste se quiser mais/menos */
+  transform: translateY(calc(100% - 200px));
+  max-height: 36vh;
+}
+.drawer-titlebar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 0 1rem; height: 48px;
+}
+.drawer-toggle{
+  cursor:pointer; background:#152238; color:#cfe6ff;
+  border:1px solid #2a3c5a; border-radius:.55rem;
+  padding:.35rem .7rem; font-weight:700;
+}
+
+/* MOBILE: escondemos HUD antigo; drawers mandam no mobile */
+@media (max-width: 719px){
+  .hud{ display: none !important; }
+}
+
+/* Inputs do drawer de medição */
+.input{
+  background:#0e1522; border:1px solid #1e2b46; color:var(--ink);
+  border-radius:.5rem; padding:.6rem .7rem; width:100%;
+}
+/* Remover escurecimento do backdrop dos drawers (mobile) */
+.drawer-backdrop,
+.drawer-backdrop.open{
+  background: transparent !important;
+  pointer-events: none; /* não intercepta toques/cliques */
+}
+/* Selects herdam o mesmo visual de .input */
+.input {
+  background:#0e1522; border:1px solid #1e2b46; color:var(--ink);
+  border-radius:.5rem; padding:.6rem .7rem; width:100%;
+}
+.input:focus { outline: 2px solid #2a3c5a; outline-offset: 2px; }
+
+
+/* Historico */
+.history-layout{
+  display:grid;
+  gap:1.2rem;
+}
+@media (min-width: 900px){
+  .history-layout{ grid-template-columns: minmax(0,320px) minmax(0,1fr); align-items:start; }
+}
+.history-list{
+  display:grid;
+  gap:.6rem;
+}
+.history-item{
+  text-align:left;
+  width:100%;
+  background:#111a28;
+  border:1px solid #1e2b46;
+  border-radius:.65rem;
+  padding:.7rem .85rem;
+  color:var(--ink);
+  font-weight:700;
+  display:grid;
+  gap:.2rem;
+  cursor:pointer;
+  transition:background .2s ease, border-color .2s ease;
+}
+.history-item:hover{ background:#152238; }
+.history-item.active{ border-color:#6bdcffaa; background:#152238; }
+.history-item:focus-visible{ outline:2px solid #6bdcff; outline-offset:2px; }
+.history-date{ font-size:.9rem; opacity:.75; }
+.history-time{ font-size:1.05rem; }
+.history-dob{ font-size:.85rem; opacity:.7; }
+.history-detail{ display:grid; gap:1rem; }
+
+/* Layout com coluna de anúncios (desktop) */
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;  /* 320px para a coluna de ads */
+  gap: 1rem;
+}
+
+.ads-left {
+  position: sticky;
+  top: 84px;                /* abaixo do header */
+  height: calc(100dvh - 100px);
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  padding-top: .25rem;
+}
+
+.ad-slot{
+  display:flex; align-items:center; justify-content:center;
+  width: 300px; max-width: 100%;
+  border:1px solid #233656; border-radius:12px;
+  background: linear-gradient(180deg, #0f1726, #0d1421);
+  color:#8fb2d9; font-weight:800; letter-spacing:.5px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.ad-300x600{ height:600px; }
+.ad-300x250{ height:250px; }
+
+/* Esconde a coluna de ads no mobile/tablet */
+@media (max-width: 1023px){
+  .layout { display:block; }
+  .ads-left { display:none; }
+}
+
+/* Garante que o canvas/drawers fiquem na coluna principal */
+.main-col { position: relative; }
+/* ===== Layout principal (desktop) ===== */
+.main-grid{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 420px;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: var(--grid-top-gap);       /* <-- respiro agora no GRID */
+}
+@media (max-width: 1023px){
+  .main-grid{ display:block; }
+  .only-desktop{ display:none !important; }
+}
+
+/* Respiro no topo do canvas */
+.stage{
+  margin-top: 0;                          /* <-- remove respiro local */
+  display: flex;
+  justify-content: center;
+}
+
+/* Sidebar de resultados (fixa sob o header) */
+.sidebar{
+  position: sticky;
+  top: calc(var(--header-h) + var(--grid-top-gap));  /* <-- alinha com o canvas */
+  display: grid;
+  gap: 1rem;
+}
+
+/* Cartão compacto de resultado */
+.panel{
+  background: linear-gradient(180deg, #0f1726, #0d1421);
+  border: 1px solid #233656;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.panel .title{ font-weight:800; margin:0 0 .6rem; }
+.panel .big{ font-size: 2.1rem; font-weight: 900; letter-spacing: .5px; }
+.panel .chip{ display:inline-flex; align-items:center; height:2rem; padding:.2rem .6rem;
+  border:1px solid #2a3c5a; border-radius:999px; font-weight:700; margin-top:.4rem;
+}
+/* Embutir o HUD quando estiver na sidebar do desktop */
+.only-desktop .sidebar .hud{
+
+  position: static;
+  right: auto;
+  top: auto;
+  width: max-content;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* linha do número + chip */
+.result-head{
+  display:flex;
+  align-items:center;    /* alinha pela base do texto */
+  gap:.75rem;
+}
+.result-head .big{ line-height:1; }
+.result-head .chip{ margin-top:0; }  /* não deixa o chip “cair” */
+
+@media (max-width: 640px){
+  .result-head{ display:block; }     /* no mobile, empilha */
+}
+
+/* título + chip na mesma linha */
+.title-row{
+  display:flex;
+  align-items: baseline;   /* mesma linha, alinhado pela base */
+  gap:.6rem;
+  flex-wrap:wrap;          /* se apertar, quebra bonito */
+}
+.title-row .title{ margin:0; }   /* evita espaço extra do h3 */
+.title-row .chip{ margin-top:0; } /* garante alinhamento do chip */
+
+@media (max-width: 640px){
+  .title-row{ display:block; }   /* no mobile pode empilhar */
+}
+
+.row-inline{
+  display:grid;
+  grid-template-columns: 1fr 1fr; /* Data | Hora */
+  gap: 1rem;
+  align-items: end;
+  margin-top: .6rem;
+}
+.row-inline .field{
+  display:grid;
+  grid-template-rows: auto 1fr;
+  gap:.5rem;
+}
+
+@media (max-width: 720px){
+  .row-inline{ grid-template-columns: 1fr; }
+}
+
+.hudform-title {
+  margin-bottom: 0.5rem; /* ou até 0.25rem se quiser bem colado */
+}
+
+.wheel-wrap {
+  padding: .4rem 0;
+}
+.rmp-container {
+  height: 190px;           /* altura da “janela” de rolagem */
+}
+.rmp-wheel {
+  font-size: 16px;
+}
+.alreadyChaos{
+ height: fit-content;
+  padding-top: 12px;
+  padding-left: 24px;
+  padding-bottom: 12px;
+  border:1px solid;
+  margin: 20px auto;
+  border-radius: 52px;
+  border-color: #233656 !important;
+}
+.divFlex{
+  display: flex;
+  justify-content: left ;
+  align-items: center;
+  gap: .8rem;        /* espaço entre número e chip */
 }

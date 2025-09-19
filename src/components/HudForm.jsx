@@ -42,11 +42,13 @@ export default function HudForm({ onStart, disabled }) {
 
   return (
     <form className="hud" onSubmit={(e) => e.preventDefault()} aria-label="Entrada de dados">
-      <h2 className="modal-title">Informe a sua data de nascimento</h2>
+      <div style={{marginTop:"-1rem", marginBottom:"-1rem" }}><h2  className="modal-title hudform-title">Informe a sua data de nascimento</h2> </div>
+      
 
-      <div className="row">
-        <label>Data</label>
-        <div className="grid3">
+      <div style={{display:"flex"}}>
+        <div >
+        
+        <div className="grid3" style={{marginRight:".4rem", marginBottom:".4rem"}}>
           <select value={dobDay} onChange={(e) => setDobDay(e.target.value)} required>
             {days.map((d) => (
               <option key={d} value={d}>
@@ -74,10 +76,11 @@ export default function HudForm({ onStart, disabled }) {
             ))}
           </select>
         </div>
-      </div>
-
-      <div className="row">
-        <label htmlFor="hour">Hora e minuto</label>
+     
+</div>
+ <div >
+      
+       
         <div className="grid2">
           <select id="hour" value={hour} onChange={(e) => setHour(e.target.value)} required>
             {hours.map((h) => (
@@ -95,10 +98,10 @@ export default function HudForm({ onStart, disabled }) {
             ))}
           </select>
         </div>
-      </div>
-
+      
+</div></div>
       <button
-        type="button"
+        type="button" 
         className="btn"
         disabled={disabled}
         onClick={() => onStart?.({ dob, hh: hour, mm: minute })}

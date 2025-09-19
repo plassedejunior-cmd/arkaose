@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# (Opcional, mas recomendado) Garante Node 18+ no build
+[build.environment]
+  NODE_VERSION = "18"
+
+# SPA redirect (se no futuro você usar rotas no cliente)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
