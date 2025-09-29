@@ -646,6 +646,11 @@ canvas{ display:block; }
   .title-row{ display:block; }   /* no mobile pode empilhar */
 }
 
+.titulo-completo{
+  font-size:clamp(1rem, .95rem + .6vw, 1.3rem);
+  font-weight:800;
+  margin-top: 1rem;
+}
 .row-inline{
   display:grid;
   grid-template-columns: 1fr 1fr; /* Data | Hora */
@@ -692,3 +697,7 @@ canvas{ display:block; }
   align-items: center;
   gap: .8rem;        /* espaço entre número e chip */
 }
+.modal-title{ font-size:clamp(1rem, 0.95rem + 0.6vw, 1.3rem); font-weight:800; margin:0; }
+.m-0{ margin:0 !important; }
+.mt-sm{ margin-top:.75rem !important; }
+.chip-soft{ background:rgba(107,220,255,0.16); color:var(--ink); border-color:rgba(107,220,255,0.35); }

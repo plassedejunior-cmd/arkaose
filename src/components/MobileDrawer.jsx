@@ -6,6 +6,10 @@ const NAV_LINKS = [
   { to: "/como-funciona", label: "Como funciona" },
   { to: "/sobre", label: "Sobre" },
   { to: "/historico", label: "Historico" },
+  { to: "/profile", label: "Perfil" },
+  { to: "/nova-compra", label: "Criar compra" },
+  { to: "/reset", label: "Redefinir senha" },
+  { to: "/login", label: "Login" },
 ];
 
 export default function MobileDrawer({ open, onClose }) {
@@ -91,4 +95,3 @@ export default function MobileDrawer({ open, onClose }) {
     </>
   );
 }
-

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import ChaosIntensityBar from "./ChaosIntensityBar";
 
 /**
  * Form de input DOB + hora:min (controlado e responsivo).
@@ -42,7 +43,7 @@ export default function HudForm({ onStart, disabled }) {
 
   return (
     <form className="hud" onSubmit={(e) => e.preventDefault()} aria-label="Entrada de dados">
-      <div style={{marginTop:"-1rem", marginBottom:"-1rem" }}><h2  className="modal-title hudform-title">Informe a sua data de nascimento</h2> </div>
+      <div><h2 className="modal-title hudform-title titulo-completo">Informe a sua data de nascimento</h2> </div>
       
 
       <div style={{display:"flex"}}>

@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { renderShareCard } from "../lib/shareCard";
 import WheelDateTimePicker from "./WheelDateTimePicker";
+import ChaosIntensityBar from "./ChaosIntensityBar";
 /**
  * Drawer mobile combinado (entrada → medição → resultado → compartilhar).
  *
@@ -203,6 +204,7 @@ export default function MobileChaosDrawer({
                 <div className="alreadyChaos" >{result.alreadyMsg}</div>
               ) : null}
               <h2 className="h2 m-0">Sua influência caótica</h2>
+              <ChaosIntensityBar value={Number(result.bigCounter)} />
               <div className="divFlex" style={{ display: showCompact ? "flex" : "center" }}>
                 <div className="bigCounter">{result?.bigCounter}</div>
                 <span className={`chip ${result?.rangeBadge?.key || ""}`}>

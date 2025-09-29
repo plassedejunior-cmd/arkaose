@@ -2,10 +2,12 @@
 import { classifyWMO } from "./weatherMap";
 import { WEATHER_ADVICE } from "./weatherAdviceTexts";
 import { hashStr } from "./rng";
+import { localDayStr as storageLocalDayStr } from "./storage";
 
 /** YYYY-MM-DD do fuso local */
-function localDayStr() { /* igual ao seu */ }
-
+function localDayStr() {
+  return storageLocalDayStr();
+}
 /** escolhe 1 item de um array de forma estável (determinística) pelo seed */
 // util interno do weatherAdvice.js (ou extraia p/ rng.js se preferir)
 function pickStable(arr, seed) {

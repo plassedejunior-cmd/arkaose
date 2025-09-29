@@ -26,11 +26,11 @@ export default function WheelDateTimePicker({ value, onChange }) {
   const hours = useMemo(() => Array.from({length:24}, (_,i)=> i), []);
   const minutes = useMemo(() => Array.from({length:60}, (_,i)=> i), []);
 
-  // value do Picker é um objeto {colName: currentValue}
+  // value do Picker e um objeto {colName: currentValue}
   const pickerValue = { day, month, year, hour, minute };
 
   function handleChange(next){
-    // Ajusta o dia quando o mês/ano mudarem
+    // Ajusta o dia quando o mes/ano mudarem
     const nextYear  = next.year  ?? year;
     const nextMonth = next.month ?? month;
     const nextMaxDay = daysInMonth(nextMonth, nextYear);
@@ -46,7 +46,7 @@ export default function WheelDateTimePicker({ value, onChange }) {
   }
 
   return (
-    <div className="wheel-wrap">
+    <div className="wheel-wrap wheel-date-picker">
       <Picker value={pickerValue} onChange={handleChange} wheelMode="normal">
         <Picker.Column name="day">
           {days.map(d => (
