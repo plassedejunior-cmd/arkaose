@@ -1,4 +1,4 @@
-// src/App.jsx
+﻿// src/App.jsx
 import { useEffect, useRef, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
@@ -183,14 +183,7 @@ export default function App() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        position: "relative",
-        display: "grid",
-        gridTemplateRows: "auto 1fr auto",
-      }}
-    >
+    <div>
       <Header />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -207,26 +200,33 @@ export default function App() {
           path="/"
           element={
             <div className="main-grid">
-              <div className="stage">
-                <ChaosCanvas
-                  key={runKey}
-                  ref={canvasRef}
-                  running={running}
-                  speedMul={speedMul}
-                />
-              </div>
+              {isDesktop ? null : (
+                <div className="stage">
+                  <ChaosCanvas
+                    key={runKey}
+                    ref={canvasRef}
+                    running={running}
+                    speedMul={speedMul}
+                  />
+                </div>
+              )}
+
               <div className="only-desktop">
-                <div className="sidebar">
-                  <div className="panel">
-                    <HudForm onStart={handleStart} disabled={running} />
-                  </div>
+                <div className="desktop-layout">
+                  <HudForm onStart={handleStart} disabled={running} />
+
                   <ResultsSidebarDesktop
                     data={result}
                     running={running}
                     seconds={seconds}
+                    resultReady={resultReady}
+                    canvasRef={canvasRef}
+                    canvasKey={runKey}
+                    speedMul={speedMul}
                   />
                 </div>
               </div>
+
               {!isDesktop && (
                 <MobileChaosDrawer
                   open={true}
@@ -245,10 +245,18 @@ export default function App() {
           }
         />
       </Routes>
-      <div style={{ margin: "20px auto", maxWidth: 600 }}>
-        <AdBox />
-      </div>
+ 
       <Footer />
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+

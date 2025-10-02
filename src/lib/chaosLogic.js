@@ -1,4 +1,4 @@
-import { SIGNOS, ZODIAC_TRAITS, HORO, ADVICE } from "./constants";
+﻿import { SIGNOS, ZODIAC_TRAITS, HORO, ADVICE } from "./constants";
 import { mulberry32, hashStr, pickDistinct } from "./rng";
 import { localDayStr } from "./storage";
 
@@ -6,7 +6,8 @@ import { localDayStr } from "./storage";
 export function signoTropical(dobStr) {
   if (!dobStr) return "—";
   const [, M, D] = dobStr.split("-").map(Number);
-  const m = M, d = D;
+  const m = M;
+  const d = D;
   if ((m === 3 && d >= 21) || (m === 4 && d <= 19)) return "Áries";
   if ((m === 4 && d >= 20) || (m === 5 && d <= 20)) return "Touro";
   if ((m === 5 && d >= 21) || (m === 6 && d <= 20)) return "Gêmeos";
@@ -26,7 +27,8 @@ export function signoTropical(dobStr) {
 export function chaosSignFromBuckets(signoReal, chaosNum) {
   const idx = SIGNOS.indexOf(signoReal);
   if (idx < 0) return { signo: "—", casas: 0 };
-  const TOTAL = 2000, PARTES = 12;
+  const TOTAL = 2000;
+  const PARTES = 12;
   const tam = Math.ceil(TOTAL / PARTES); // 167
   const bucket = Math.min(PARTES - 1, Math.floor((Math.max(1, chaosNum) - 1) / tam));
   const offset = bucket;
@@ -35,12 +37,41 @@ export function chaosSignFromBuckets(signoReal, chaosNum) {
 
 // Faixas de intensidade do caos
 export function rangeInfo(num) {
-  if (num <= 300)  return { key: "r1", label: "Serena",  blurb: "O acaso se recolhe; o movimento quase não deixa marcas." };
-  if (num <= 700)  return { key: "r2", label: "Suave",   blurb: "As variações fluem devagar, sugerindo ajustes discretos." };
-  if (num <= 1100) return { key: "r3", label: "Agitada", blurb: "Há pequenas oscilações; nada se torna definitivo, mas nada desmorona." };
-  if (num <= 1500) return { key: "r4", label: "Instável",blurb: "Os sinais se acumulam; escolhas ganham peso inesperado." };
-  if (num <= 1800) return { key: "r5", label: "Intensa", blurb: "As correntes aceleram; a ordem e o acaso se disputam em voz alta." };
-  return { key: "r6", label: "Caótica", blurb: "A maré do acaso domina; tudo se mistura e se reinventa no instante." };
+  if (num <= 300)
+    return {
+      key: "r1",
+      label: "Serena",
+      blurb: "O acaso se recolhe; o movimento quase não deixa marcas.",
+    };
+  if (num <= 700)
+    return {
+      key: "r2",
+      label: "Suave",
+      blurb: "As variações fluem devagar, sugerindo ajustes discretos.",
+    };
+  if (num <= 1100)
+    return {
+      key: "r3",
+      label: "Agitada",
+      blurb: "Há pequenas oscilações; nada se torna definitivo, mas nada desmorona.",
+    };
+  if (num <= 1500)
+    return {
+      key: "r4",
+      label: "Instável",
+      blurb: "Os sinais se acumulam; escolhas ganham peso inesperado.",
+    };
+  if (num <= 1800)
+    return {
+      key: "r5",
+      label: "Intensa",
+      blurb: "As correntes aceleram; a ordem e o acaso se disputam em voz alta.",
+    };
+  return {
+    key: "r6",
+    label: "Caótica",
+    blurb: "A maré do acaso domina; tudo se mistura e se reinventa no instante.",
+  };
 }
 
 // Mensagem combinando traços do signo real e do “signo do caos”
@@ -48,11 +79,14 @@ export function composeDualTraitsMessage(signoReal, signoChaos, casas, dob) {
   const seed = hashStr(localDayStr() + "|" + (dob || ""));
   const rng = mulberry32(seed);
 
-  const baseTraits  = pickTraitsFromSign(signoReal, 3, rng); // 3 do Sol
+  const baseTraits = pickTraitsFromSign(signoReal, 3, rng); // 3 do Sol
   const driftTraits = pickTraitsFromSign(signoChaos, 2, rng); // 2 do Caos
 
+  const semDrift =
+    baseTraits.length === 0 || driftTraits.length === 0 || signoChaos === "—";
+
   const message =
-    signoReal === signoChaos
+    signoReal === signoChaos || semDrift
       ? `O caos está discreto hoje; seu Sol em ${signoReal} predomina em todos os sentidos da sua vida.`
       : `Seu Sol em ${signoReal} faz você ser ${listPT(baseTraits)}, mas não se espante se você se perceber ${listOu(driftTraits)}, pois a entropia do caos moveu seu vetor natal em ${casas} casa(s), trazendo influência de ${signoChaos} hoje.`;
 
@@ -61,8 +95,6 @@ export function composeDualTraitsMessage(signoReal, signoChaos, casas, dob) {
 
 export const phraseByIdx = (i) => HORO[i % HORO.length];
 export const adviceByIdx = (i) => ADVICE[i % ADVICE.length];
-
-
 
 // ---------- auxiliares privados ----------
 function pickTraitsFromSign(signo, n, rng) {

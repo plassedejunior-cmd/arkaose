@@ -32,7 +32,7 @@ const ChaosCanvas = forwardRef(function ChaosCanvas(
 
   // física
   const g = 980 * 0.12;
-  const L1 = 150, L2 = 150, L3 = 150;
+  const L1 = 80, L2 = 80, L3 = 80;
   const damping = 0.999;
   const pRef = useRef({ p0:null, p1:null, p2:null, p3:null, s01:null, s12:null, s23:null });
 
@@ -97,7 +97,7 @@ const ChaosCanvas = forwardRef(function ChaosCanvas(
     const ctx = ctxRef.current;
     if (!ctx || !w || !h) return;
 
-    ctx.fillStyle = "#0b0f15";
+    ctx.fillStyle = "#272729ff";
     ctx.fillRect(0, 0, w, h);
 
     if (running) {

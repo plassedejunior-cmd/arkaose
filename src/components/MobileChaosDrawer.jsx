@@ -184,7 +184,7 @@ export default function MobileChaosDrawer({
           <div className="drawer-grip" />
         </div>
 
-        <div className="drawer-body">
+        <div className="hud-drawer-content">
           {/* ======== Estado: medindo ======== */}
           {running && (
             <>
@@ -203,6 +203,7 @@ export default function MobileChaosDrawer({
               {result?.alreadyMsg ? (
                 <div className="alreadyChaos" >{result.alreadyMsg}</div>
               ) : null}
+              <div className="hud-card">
               <h2 className="h2 m-0">Sua influência caótica</h2>
               <ChaosIntensityBar value={Number(result.bigCounter)} />
               <div className="divFlex" style={{ display: showCompact ? "flex" : "center" }}>
@@ -213,7 +214,7 @@ export default function MobileChaosDrawer({
               </div>
 
               <p className="p muted">{result?.rangeDesc}</p>
-
+              </div>
               <div className="section">
                 <h3 className="h2">Influência caótica</h3>
                 <p className="p muted">{result?.inflMsg}</p>
